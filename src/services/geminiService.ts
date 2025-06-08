@@ -31,7 +31,7 @@ interface DocumentAnalysis {
 
 class GeminiService {
   private apiKey: string;
-  private baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+  private baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
@@ -94,6 +94,8 @@ class GeminiService {
     `;
 
     try {
+      console.log('Making API request to Gemini with API key:', this.apiKey.substring(0, 10) + '...');
+      
       const response = await fetch(`${this.baseUrl}?key=${this.apiKey}`, {
         method: 'POST',
         headers: {
@@ -107,25 +109,39 @@ class GeminiService {
           }],
           generationConfig: {
             temperature: 0.2,
-            maxOutputTokens: 2048,
+            maxOutputTokens: 4096,
           }
         }),
       });
 
+      console.log('API Response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error(`Gemini API error: ${response.statusText}`);
+        const errorData = await response.json();
+        console.error('API Error details:', errorData);
+        throw new Error(`Gemini API error: ${errorData.error?.message || response.statusText}`);
       }
 
       const data = await response.json();
+      console.log('API Response data:', data);
+      
+      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+        throw new Error('Invalid response structure from Gemini API');
+      }
+      
       const analysisText = data.candidates[0].content.parts[0].text;
       
       // Clean up the response to extract JSON
       const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
+        console.error('No JSON found in response:', analysisText);
         throw new Error('Invalid JSON response from Gemini');
       }
 
-      return JSON.parse(jsonMatch[0]);
+      const parsedAnalysis = JSON.parse(jsonMatch[0]);
+      console.log('Parsed analysis:', parsedAnalysis);
+      
+      return parsedAnalysis;
     } catch (error) {
       console.error('Gemini analysis error:', error);
       throw error;
@@ -159,6 +175,11 @@ class GeminiService {
           }
         }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Gemini API error: ${errorData.error?.message || response.statusText}`);
+      }
 
       const data = await response.json();
       return data.candidates[0].content.parts[0].text;

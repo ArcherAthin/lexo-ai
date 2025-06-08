@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Upload, File, CloudUpload, Link, Search, Settings, Loader2 } from 'lucide-react';
+import { Upload, File, CloudUpload, Link, Search, Settings, Loader2, Sparkles, Zap } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { GeminiService, DocumentAnalysis } from '@/services/geminiService';
 import DashboardTiles from './DashboardTiles';
@@ -146,31 +146,47 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ apiKey }) => {
 
   if (analysis) {
     return (
-      <div className="min-h-screen bg-white relative">
+      <div className="min-h-screen relative overflow-hidden">
         <AnimatedBackground />
         <div className="relative z-10">
           <div className="max-w-7xl mx-auto p-6">
             <motion.div
-              initial={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               className="text-center mb-8"
             >
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Document Analysis Complete
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                AI-powered insights extracted from your document
-              </p>
-              <Button
-                onClick={() => {
-                  setAnalysis(null);
-                  setDocumentContent('');
-                }}
-                variant="outline"
-                className="mt-4 neon-border"
+              <motion.div 
+                className="inline-flex items-center gap-3 mb-4"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
               >
-                Analyze Another Document
-              </Button>
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-lexo-purple to-lexo-neon flex items-center justify-center animate-pulse-glow">
+                  <Sparkles className="h-6 w-6 text-white" />
+                </div>
+                <h2 className="text-4xl font-bold gradient-text">
+                  AI Analysis Complete! ✨
+                </h2>
+              </motion.div>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Your document has been processed with next-gen AI insights
+              </p>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button
+                  onClick={() => {
+                    setAnalysis(null);
+                    setDocumentContent('');
+                  }}
+                  className="mt-6 cyber-card button-glow px-8 py-3 text-lg rounded-2xl shimmer"
+                >
+                  <Zap className="h-5 w-5 mr-2" />
+                  Analyze Another Doc
+                </Button>
+              </motion.div>
             </motion.div>
             
             <DashboardTiles analysis={analysis} documentContent={documentContent} />
@@ -181,32 +197,44 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ apiKey }) => {
   }
 
   return (
-    <div className="min-h-screen bg-white relative">
+    <div className="min-h-screen relative overflow-hidden">
       <AnimatedBackground />
-      <div className="relative z-10 max-w-4xl mx-auto p-6">
+      <div className="relative z-10 max-w-5xl mx-auto p-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Upload Your Documents
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Upload PDFs, Word docs, text files, or paste URLs to extract insights with AI-powered analysis
+          <motion.div
+            initial={{ scale: 0, rotate: -10 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 150 }}
+            className="inline-flex items-center gap-3 mb-6"
+          >
+            <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-lexo-purple via-lexo-neon to-lexo-cyber-pink flex items-center justify-center animate-rainbow-glow">
+              <Upload className="h-8 w-8 text-white" />
+            </div>
+            <h2 className="text-5xl font-bold gradient-text">
+              Drop it like it's hot! 🔥
+            </h2>
+          </motion.div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Upload your docs and watch our AI work its magic ✨ Supports PDFs, Word docs, text files, and URLs
           </p>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="mb-12"
         >
           <Card 
-            className={`border-2 border-dashed transition-all duration-300 ${
+            className={`cyber-card transition-all duration-500 ${
               isDragging 
-                ? 'border-lexo-purple bg-lexo-purple/5 neon-glow' 
-                : 'border-gray-300 hover:border-lexo-purple hover:bg-gray-50'
+                ? 'neon-glow scale-105 animate-pulse-glow' 
+                : 'hover:neon-glow hover:scale-102'
             }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -215,25 +243,25 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ apiKey }) => {
             <CardContent className="p-12">
               <div className="text-center">
                 <motion.div
-                  className="mx-auto w-16 h-16 bg-lexo-purple/10 rounded-full flex items-center justify-center mb-6"
-                  whileHover={{ scale: 1.1 }}
+                  className="mx-auto w-24 h-24 bg-gradient-to-br from-lexo-purple to-lexo-neon rounded-3xl flex items-center justify-center mb-8 floating-element"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
                   {isProcessing ? (
-                    <Loader2 className="h-8 w-8 text-lexo-purple animate-spin" />
+                    <Loader2 className="h-12 w-12 text-white animate-spin" />
                   ) : (
-                    <Upload className="h-8 w-8 text-lexo-purple" />
+                    <Upload className="h-12 w-12 text-white" />
                   )}
                 </motion.div>
                 
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  {isProcessing ? 'Processing with AI...' : 'Drop files here or click to upload'}
+                <h3 className="text-3xl font-bold text-gray-900 mb-3 gradient-text">
+                  {isProcessing ? 'AI is cooking... 🧠' : 'Drag & drop or click to upload'}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-lg text-gray-600 mb-8">
                   Supports PDF, DOCX, TXT files up to 50MB
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+                <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-10">
                   <input
                     type="file"
                     multiple
@@ -244,87 +272,119 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ apiKey }) => {
                     disabled={isProcessing}
                   />
                   <label htmlFor="file-upload">
-                    <Button 
-                      className="bg-lexo-purple hover:bg-lexo-purple-dark button-glow cursor-pointer"
-                      disabled={isProcessing}
-                      asChild
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                      <span>
-                        <File className="h-5 w-5 mr-2" />
-                        Choose Files
-                      </span>
-                    </Button>
+                      <Button 
+                        className="button-glow px-8 py-4 text-lg rounded-2xl cursor-pointer shimmer"
+                        disabled={isProcessing}
+                        asChild
+                      >
+                        <span>
+                          <File className="h-6 w-6 mr-3" />
+                          Choose Files
+                        </span>
+                      </Button>
+                    </motion.div>
                   </label>
 
-                  <Button 
-                    variant="outline" 
-                    className="neon-border button-glow"
-                    disabled={isProcessing}
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    <CloudUpload className="h-5 w-5 mr-2" />
-                    Import from Cloud
-                  </Button>
+                    <Button 
+                      variant="outline" 
+                      className="neon-border px-8 py-4 text-lg rounded-2xl shimmer"
+                      disabled={isProcessing}
+                    >
+                      <CloudUpload className="h-6 w-6 mr-3" />
+                      Cloud Import
+                    </Button>
+                  </motion.div>
                 </div>
 
-                {/* URL Input */}
-                <div className="flex gap-2 max-w-md mx-auto">
+                {/* Enhanced URL Input */}
+                <motion.div 
+                  className="flex gap-3 max-w-lg mx-auto"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 }}
+                >
                   <Input
                     type="url"
-                    placeholder="Paste Google Docs link or any URL..."
+                    placeholder="Paste any URL and watch the magic happen... ✨"
                     value={urlInput}
                     onChange={(e) => setUrlInput(e.target.value)}
                     disabled={isProcessing}
-                    className="flex-1"
+                    className="flex-1 rounded-xl border-2 border-transparent bg-white/80 backdrop-blur-sm focus:neon-border"
                   />
-                  <Button
-                    onClick={handleUrlImport}
-                    disabled={!urlInput.trim() || isProcessing}
-                    className="bg-lexo-purple hover:bg-lexo-purple-dark"
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    <Link className="h-4 w-4" />
-                  </Button>
-                </div>
+                    <Button
+                      onClick={handleUrlImport}
+                      disabled={!urlInput.trim() || isProcessing}
+                      className="button-glow px-6 rounded-xl"
+                    >
+                      <Link className="h-5 w-5" />
+                    </Button>
+                  </motion.div>
+                </motion.div>
               </div>
             </CardContent>
           </Card>
         </motion.div>
 
-        {/* Feature cards */}
+        {/* Enhanced Feature cards */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6"
+          transition={{ delay: 0.8, duration: 0.6 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
         >
-          <Card className="smooth-transition hover:shadow-glow">
-            <CardContent className="p-6 text-center">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <File className="h-6 w-6 text-blue-600" />
-              </div>
-              <h4 className="font-semibold mb-2">Smart Processing</h4>
-              <p className="text-sm text-gray-600">Advanced AI extracts key insights and structures your documents</p>
-            </CardContent>
-          </Card>
-
-          <Card className="smooth-transition hover:shadow-glow">
-            <CardContent className="p-6 text-center">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Search className="h-6 w-6 text-green-600" />
-              </div>
-              <h4 className="font-semibold mb-2">Intelligent Search</h4>
-              <p className="text-sm text-gray-600">Ask questions and get precise answers from your documents</p>
-            </CardContent>
-          </Card>
-
-          <Card className="smooth-transition hover:shadow-glow">
-            <CardContent className="p-6 text-center">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Settings className="h-6 w-6 text-purple-600" />
-              </div>
-              <h4 className="font-semibold mb-2">Rich Analytics</h4>
-              <p className="text-sm text-gray-600">Get summaries, timelines, and entity recognition automatically</p>
-            </CardContent>
-          </Card>
+          {[
+            {
+              icon: File,
+              title: "Smart Processing",
+              description: "Advanced AI extracts key insights and structures your documents",
+              color: "from-blue-500 to-cyan-500",
+              delay: 0
+            },
+            {
+              icon: Search,
+              title: "Intelligent Search",
+              description: "Ask questions and get precise answers from your documents",
+              color: "from-green-500 to-emerald-500",
+              delay: 0.1
+            },
+            {
+              icon: Settings,
+              title: "Rich Analytics",
+              description: "Get summaries, timelines, and entity recognition automatically",
+              color: "from-purple-500 to-pink-500",
+              delay: 0.2
+            }
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 + feature.delay, duration: 0.5 }}
+              whileHover={{ y: -10, scale: 1.02 }}
+            >
+              <Card className="cyber-card h-full hover:neon-glow group">
+                <CardContent className="p-8 text-center h-full flex flex-col">
+                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:animate-bounce-in`}>
+                    <feature.icon className="h-8 w-8 text-white" />
+                  </div>
+                  <h4 className="text-xl font-bold mb-4 gradient-text">{feature.title}</h4>
+                  <p className="text-gray-600 leading-relaxed flex-grow">{feature.description}</p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
         </motion.div>
       </div>
     </div>
