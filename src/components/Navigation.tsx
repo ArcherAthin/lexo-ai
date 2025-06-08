@@ -1,21 +1,34 @@
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Search, Settings, User } from 'lucide-react';
+import { Search, Settings } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
+  const navigate = useNavigate();
+
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-sm">
+    <motion.nav
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-white/90 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center">
+          <motion.div
+            className="flex items-center cursor-pointer"
+            onClick={() => navigate('/dashboard')}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
             <div className="flex-shrink-0">
               <h1 className="text-2xl font-bold gradient-text">
                 Lexo.ai
               </h1>
             </div>
-          </div>
+          </motion.div>
 
           {/* Search Bar */}
           <div className="hidden md:block flex-1 max-w-md mx-8">
@@ -33,17 +46,20 @@ const Navigation = () => {
 
           {/* Right side buttons */}
           <div className="flex items-center space-x-3">
-            <Button variant="ghost" size="sm" className="smooth-transition hover:bg-lexo-purple/10">
-              <Settings className="h-5 w-5" />
-            </Button>
-            <Button variant="outline" size="sm" className="neon-border button-glow">
-              <User className="h-5 w-5 mr-2" />
-              Account
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="ghost" size="sm" className="smooth-transition hover:bg-lexo-purple/10">
+                <Settings className="h-5 w-5" />
+              </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="outline" size="sm" className="neon-border button-glow">
+                Account
+              </Button>
+            </motion.div>
           </div>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 
