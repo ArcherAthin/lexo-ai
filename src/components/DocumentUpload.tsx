@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Upload, File, CloudUpload, Link } from 'lucide-react';
+import { Upload, File, CloudUpload, Link, Search, Settings } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const DocumentUpload = () => {
